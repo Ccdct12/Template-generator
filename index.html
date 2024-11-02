@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore Template</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: 20px auto; }
+        label, textarea { display: block; margin-top: 15px; }
+        textarea { width: 100%; height: 300px; }
+    </style>
+</head>
+<body>
+    <h2>Generatore di Template per Account Radix</h2>
+
+    <!-- Casella di input per l'indirizzo account -->
+    <label for="accountAddress">Inserisci l'indirizzo dell'account Radix:</label>
+    <input type="text" id="accountAddress" placeholder="account_rdx123...">
+
+    <!-- Bottone per generare il template -->
+    <button onclick="generateTemplate()">Genera Template</button>
+
+    <!-- Area di testo per mostrare il template generato -->
+    <textarea id="templateOutput" readonly></textarea>
+
+    <script>
+        function generateTemplate() {
+            // Ottieni l'indirizzo dell'account dall'input
+            const accountAddress = document.getElementById("accountAddress").value;
+
+            // Template con l'indirizzo sostituibile
+            const template = `
+CALL_METHOD
+    Address("${accountAddress}")
+    "withdraw"
+    Address("resource_rdx1tknxxxxxxxxxradxrdxxxxxxxxx009923554798xxxxxxxxxradxrd")
+    Decimal("400");
+TAKE_ALL_FROM_WORKTOP
+    Address("resource_rdx1tknxxxxxxxxxradxrdxxxxxxxxx009923554798xxxxxxxxxradxrd")
+    Bucket("bucket1");
+CALL_METHOD
+    Address("validator_rdx1sv7zpyuj27ycmcsnw0de94j2rp93csq6gvcm4dl4yh4p4fxv9j5pqx")
+    "stake"
+    Bucket("bucket1");
+// (continua il template qui...)
+CALL_METHOD
+    Address("${accountAddress}")
+    "deposit_batch"
+    Expression("ENTIRE_WORKTOP");
+`;
+
+            // Mostra il template nell'area di testo
+            document.getElementById("templateOutput").value = template;
+        }
+    </script>
+</body>
+</html>
